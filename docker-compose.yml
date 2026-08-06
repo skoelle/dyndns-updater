@@ -1,0 +1,13 @@
+services:
+  dyndns-updater:
+    image: ghcr.io/skoelle/dyndns-updater:latest
+    container_name: dyndns-updater
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - "8090:8090"   # Webhook-Port (GET, kein Auth) - intern im LAN
+    volumes:
+      - ./data:/data  # last-known-ip.json Persistierung
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
