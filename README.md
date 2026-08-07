@@ -63,3 +63,7 @@ ruff format --check .
 
 Wird automatisch per GitHub Actions nach `ghcr.io/skoelle/dyndns-updater` gebaut
 (siehe `.github/workflows/build-and-push.yml`).
+
+## License
+
+Licensed under the [MIT License](LICENSE) - Copyright (c) 2026 Stefan Koelle (https://stefankoelle.de)

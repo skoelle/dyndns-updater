@@ -37,7 +37,8 @@ Kontext: [`SPEC.md`](SPEC.md) (Design), [`PLAN.md`](PLAN.md) (Tasks),
 - Python-Code mit Ruff formatieren (line-length 100, double quotes).
 - Änderungen an `SPEC.md`/`PLAN.md`/`README.md` mitziehen, wenn sich Design/Betrieb ändert.
 
-## Lizenz
+## License
 
-MIT – Copyright Stefan Koelle (https://stefankoelle.de). Lizenz-Header bei neuen
-Quellcode-Dateien ergänzen, wenn möglich mit `/add-license`.
+MIT License - Copyright (c) 2026 Stefan Koelle (https://stefankoelle.de)
+- Full text in `LICENSE`
+- License headers in all source code files
