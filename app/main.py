@@ -111,6 +111,7 @@ def main():
     log.info(
         "Webhook-Server startet auf Port %d (GET /webhook/update, kein Auth).", config.webhook_port
     )
+    logging.getLogger("werkzeug").setLevel(logging.ERROR)
     app.run(host="0.0.0.0", port=config.webhook_port)
 
 
