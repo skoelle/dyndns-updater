@@ -13,7 +13,7 @@ Kontext: [`SPEC.md`](SPEC.md) (Design), [`PLAN.md`](PLAN.md) (Tasks),
 
 - `app/` – Kernmodule (Python 3.12)
   - `config.py` – ENV-basierte Konfiguration + Validierung
-  - `state.py` – persistierte letzte IP (`/data/last-known-ip.json`)
+  - `state.py` – persistierte letzte IP (`/app/data/last-known-ip.json`, ephemeral im Container)
   - `fritzbox.py` – IP-Ermittlung via TR-064 (Retry/Backoff)
   - `cloudflare.py` – A-Record-Update (DNS-only)
   - `freedns.py` – FreeDNS-Update-Call
@@ -31,7 +31,7 @@ Kontext: [`SPEC.md`](SPEC.md) (Design), [`PLAN.md`](PLAN.md) (Tasks),
 
 ## Konventionen
 
-- CREDENTIALS NIE committen. `.env` und `data/` sind gitignored – nie mit `-f` hinzufügen.
+- CREDENTIALS NIE committen. `.env` ist gitignored – nie mit `-f` hinzufügen.
 - Keine Co-Autoren in Commits.
 - Keine Kommentare im Code außer auf Nachfrage.
 - Python-Code mit Ruff formatieren (line-length 100, double quotes).

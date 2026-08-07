@@ -7,7 +7,5 @@ services:
       - .env
     ports:
       - "8090:8090"   # Webhook-Port (GET, kein Auth) - intern im LAN
-    volumes:
-      - ./data:/data  # last-known-ip.json Persistierung
     labels:
       - "com.centurylinklabs.watchtower.enable=true"

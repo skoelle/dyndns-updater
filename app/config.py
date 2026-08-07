@@ -38,7 +38,7 @@ class Config:
 
         self.healthcheck_ping_url = os.environ.get("HEALTHCHECK_PING_URL", "")
 
-        self.state_path = os.environ.get("STATE_PATH", "/data/last-known-ip.json")
+        self.state_path = os.environ.get("STATE_PATH", "/app/data/last-known-ip.json")
 
     def validate(self):
         missing = [v for v in REQUIRED_VARS if not os.environ.get(v)]

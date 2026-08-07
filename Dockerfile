@@ -9,7 +9,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY app/ ./app/
 
-RUN mkdir -p /data && chown -R appuser:appuser /app /data
+RUN mkdir -p /app/data && chown -R appuser:appuser /app
 
 USER appuser
 
