@@ -11,8 +11,9 @@ class FritzBoxError(Exception):
     pass
 
 
-def get_external_ip(host: str, port: int, user: str, password: str, retries: int = 3,
-                     backoff_seconds=(2, 5, 10)) -> str:
+def get_external_ip(
+    host: str, port: int, user: str, password: str, retries: int = 3, backoff_seconds=(2, 5, 10)
+) -> str:
     last_exc = None
     for attempt in range(1, retries + 1):
         try:

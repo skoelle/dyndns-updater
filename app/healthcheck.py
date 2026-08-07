@@ -16,7 +16,7 @@ def ping(ping_url: str, status: str = "success", message: str = ""):
 
     body = message or status
     try:
-        requests.post(url, data=body.encode("utf-8"), timeout=10)
+        requests.post(url, data=body.encode("utf-8"), timeout=5)
         log.debug("Healthcheck-Ping gesendet (%s): %s", status, message)
     except requests.RequestException as exc:
         log.warning("Healthcheck-Ping fehlgeschlagen: %s", exc)

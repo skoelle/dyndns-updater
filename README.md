@@ -19,7 +19,7 @@ Details siehe [SPEC.md](SPEC.md) (Architektur/Design) und [PLAN.md](PLAN.md)
 
 ```bash
 cp .env.example .env
-vim .env   # Werte eintragen
+vim .env   # Werte eintragen (CLOUDFLARE_RECORDS: nur Subdomain-Teile, z.B. "sub1,sub2,*.home")
 docker compose up -d
 ```
 

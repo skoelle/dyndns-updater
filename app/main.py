@@ -1,18 +1,20 @@
+import concurrent.futures
 import logging
 import threading
 
 from apscheduler.schedulers.background import BackgroundScheduler
 from flask import Flask
 
+from app import cloudflare, freedns, healthcheck, state
 from app.config import config
 from app.fritzbox import FritzBoxError, get_external_ip
-from app import state, cloudflare, freedns, healthcheck
 
 log = logging.getLogger("main")
 
 app = Flask(__name__)
 
 _lock = threading.Lock()
+_executor = concurrent.futures.ThreadPoolExecutor(max_workers=2)
 
 
 def run_cycle(trigger: str = "unknown"):
@@ -32,7 +34,9 @@ def run_cycle(trigger: str = "unknown"):
 
         last_ip = state.load(config.state_path)
 
-        if current_ip == last_ip:
+        if last_ip is None:
+            log.info("Erstlauf - IP wird gesetzt: %s", current_ip)
+        elif current_ip == last_ip:
             log.info("IP unveraendert (%s) - kein DNS-Update noetig.", current_ip)
             if trigger == "poll":
                 healthcheck.ping(
@@ -78,7 +82,7 @@ def run_cycle(trigger: str = "unknown"):
 
 @app.route("/webhook/update", methods=["GET"])
 def webhook_update():
-    threading.Thread(target=run_cycle, kwargs={"trigger": "webhook"}, daemon=True).start()
+    _executor.submit(run_cycle, trigger="webhook")
     return {"status": "triggered"}, 202
 
 
@@ -104,7 +108,9 @@ def main():
     scheduler.start()
     log.info("Fallback-Polling gestartet (alle %d Minuten).", config.poll_interval_minutes)
 
-    log.info("Webhook-Server startet auf Port %d (GET /webhook/update, kein Auth).", config.webhook_port)
+    log.info(
+        "Webhook-Server startet auf Port %d (GET /webhook/update, kein Auth).", config.webhook_port
+    )
     app.run(host="0.0.0.0", port=config.webhook_port)
 
 

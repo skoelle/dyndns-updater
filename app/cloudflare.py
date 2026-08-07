@@ -1,3 +1,9 @@
+"""Cloudflare DNS-Update-Modul.
+
+Erwartet Subdomain-Teile relativ zur Zone (z.B. "sub1" oder "*.home"),
+keine FQDNs (z.B. NICHT "sub1.example.org").
+"""
+
 import logging
 
 import requests
@@ -20,12 +26,20 @@ def _headers(api_token: str):
 
 def _find_record_id(zone_id: str, api_token: str, name: str):
     url = f"{API_BASE}/zones/{zone_id}/dns_records"
-    resp = requests.get(url, headers=_headers(api_token), params={"type": "A", "name": name}, timeout=15)
+    resp = requests.get(
+        url, headers=_headers(api_token), params={"type": "A", "name": name}, timeout=15
+    )
     resp.raise_for_status()
     data = resp.json()
     results = data.get("result", [])
     if not results:
         return None
+    if len(results) > 1:
+        log.warning(
+            "Mehrere A-Records fuer '%s' gefunden (%d), nur erster wird aktualisiert.",
+            name,
+            len(results),
+        )
     return results[0]["id"]
 
 

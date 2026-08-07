@@ -1,6 +1,6 @@
+import logging
 import os
 import sys
-import logging
 
 logging.basicConfig(
     level=os.environ.get("LOG_LEVEL", "INFO"),

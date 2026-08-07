@@ -10,7 +10,7 @@ def load(state_path: str):
         log.info("Keine vorherige State-Datei gefunden (%s) - Erstlauf.", state_path)
         return None
     try:
-        with open(state_path, "r") as f:
+        with open(state_path) as f:
             data = json.load(f)
         return data.get("last_ip")
     except (json.JSONDecodeError, OSError) as exc:
