@@ -31,7 +31,7 @@ die IP bei jedem Trigger selbst ueber die FritzBox TR-064-Schnittstelle.
 ## 3. Cloudflare
 
 - Nur A-Records, DNS-only (proxied=false)
-- Subdomain-Teile ueber CLOUDFLARE_RECORDS (ENV), relativ zur Zone (z.B. "sub1" oder "*.home", kein FQDN)
+- Variable Subdomain-Liste ueber CLOUDFLARE_RECORDS (ENV)
 - Records pro Lauf per Name aufgeloest, nicht gecacht
 - Benoetigter Token-Scope: Zone -> DNS -> Edit (Template "Edit zone DNS") + Zone -> Zone -> Read
 

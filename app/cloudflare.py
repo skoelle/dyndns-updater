@@ -1,9 +1,3 @@
-"""Cloudflare DNS-Update-Modul.
-
-Erwartet Subdomain-Teile relativ zur Zone (z.B. "sub1" oder "*.home"),
-keine FQDNs (z.B. NICHT "sub1.example.org").
-"""
-
 import logging
 
 import requests
