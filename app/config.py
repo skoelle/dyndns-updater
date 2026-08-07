@@ -33,7 +33,6 @@ class Config:
 
         self.freedns_update_url = os.environ.get("FREEDNS_UPDATE_URL", "")
 
-        self.webhook_port = int(os.environ.get("WEBHOOK_PORT", "8090"))
         self.poll_interval_minutes = int(os.environ.get("POLL_INTERVAL_MINUTES", "15"))
 
         self.healthcheck_ping_url = os.environ.get("HEALTHCHECK_PING_URL", "")
@@ -49,10 +48,9 @@ class Config:
             log.error("CLOUDFLARE_RECORDS ist leer - mindestens eine Subdomain angeben.")
             sys.exit(1)
         log.info(
-            "Konfiguration geladen: %d Cloudflare-Record(s), Poll-Intervall=%d Min, Webhook-Port=%d",
+            "Konfiguration geladen: %d Cloudflare-Record(s), Poll-Intervall=%d Min",
             len(self.cloudflare_records),
             self.poll_interval_minutes,
-            self.webhook_port,
         )
 
 

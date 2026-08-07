@@ -108,11 +108,9 @@ def main():
     scheduler.start()
     log.info("Fallback-Polling gestartet (alle %d Minuten).", config.poll_interval_minutes)
 
-    log.info(
-        "Webhook-Server startet auf Port %d (GET /webhook/update, kein Auth).", config.webhook_port
-    )
+    log.info("Webhook-Server startet auf Port 8090 (GET /webhook/update, kein Auth).")
     logging.getLogger("werkzeug").setLevel(logging.ERROR)
-    app.run(host="0.0.0.0", port=config.webhook_port)
+    app.run(host="0.0.0.0", port=8090)
 
 
 if __name__ == "__main__":

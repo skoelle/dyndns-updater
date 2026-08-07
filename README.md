@@ -35,16 +35,18 @@ Alle Einstellungen erfolgen ausschließlich über Umgebungsvariablen (siehe
 | `CLOUDFLARE_ZONE_ID` | Cloudflare-Zone |
 | `CLOUDFLARE_RECORDS` | Kommagetrennte A-Record-Namen (DNS-only) |
 
-Optional: `FREEDNS_UPDATE_URL`, `WEBHOOK_PORT`, `POLL_INTERVAL_MINUTES`,
+Optional: `FREEDNS_UPDATE_URL`, `POLL_INTERVAL_MINUTES`,
 `HEALTHCHECK_PING_URL`, `TZ`, `LOG_LEVEL`. Die IP kommt ausschließlich aus der
 FritzBox, nie aus Webhook-Parametern.
 
 ## Betrieb
 
-- **State:** zuletzt bekannte IP liegt als `data/last-known-ip.json` (Volume) –
-  Änderung wird erst nach erfolgreichem Update gespeichert.
-- **Webhook:** `GET <port>/webhook/update` (kein Auth, intern) löst einen Zyklus aus.
-- **Healthz:** `GET <port>/healthz` für Container-Healhcheck.
+- **State (bewusst ohne Volume, ephemeral):** zuletzt bekannte IP liegt als
+  `data/last-known-ip.json` im Container. Bei jedem neu erstellten Container ist
+  der State wieder leer, wodurch beim Start ein Force-Push erzwungen wird.
+  Die Änderung wird erst nach erfolgreichem Update gespeichert.
+- **Webhook:** `GET /webhook/update` (kein Auth, intern, Port fest 8090) löst einen Zyklus aus.
+- **Healthz:** `GET /healthz` für den Container-Healthcheck (genutzt vom Docker-`HEALTHCHECK`).
 - **Healthchecks:** Healthy Ping bei jedem Poll, Failure Ping bei IP-Fehler bzw. Teilfehler.
 - **Logs/Wartung:** `docker compose logs -f`; Updates via Watchtower (Label im Compose).
 
