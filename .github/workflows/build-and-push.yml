@@ -4,6 +4,7 @@ on:
   push:
     branches: [main]
     tags: ["v*.*.*"]
+  workflow_dispatch:
 
 jobs:
   build:
@@ -37,3 +38,40 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+
+  cleanup:
+    runs-on: ubuntu-latest
+    needs: build
+    permissions:
+      packages: write
+      contents: read
+    steps:
+      - name: Keep only last 4 images
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          PKG_NAME="dyndns-updater"
+          KEEP=4
+
+          VERSIONS=$(gh api \
+            -H "Accept: application/vnd.github+json" \
+            "/user/packages/container/${PKG_NAME}/versions?per_page=100" \
+            --jq '.[] | "\(.id) \(.created_at) \(.metadata.container.tags // [] | join(","))"')
+
+          COUNT=$(echo "$VERSIONS" | wc -l)
+          echo "Found $COUNT versions"
+
+          if [ "$COUNT" -le "$KEEP" ]; then
+            echo "Nothing to delete ($COUNT <= $KEEP)"
+            exit 0
+          fi
+
+          DELETE_COUNT=$((COUNT - KEEP))
+          echo "Deleting $DELETE_COUNT oldest versions..."
+
+          echo "$VERSIONS" | sort -k2 -r | tail -n "$DELETE_COUNT" | while read -r ID CREATED TAGS; do
+            echo "Deleting version $ID (created: $CREATED, tags: $TAGS)"
+            gh api \
+              --method DELETE \
+              "/user/packages/container/${PKG_NAME}/versions/$ID" || true
+          done
