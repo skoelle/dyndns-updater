@@ -14,7 +14,7 @@ def update(update_url: str, timeout: int = 15) -> bool:
         resp.raise_for_status()
         answer = resp.text.strip()[:200]
         if "has not changed" in answer:
-            log.info("FreeDNS: IP unveraendert - kein Update noetig.")
+            log.info("FreeDNS Webhook Response: IP unveraendert, nichts zu updaten.")
         else:
             log.info("FreeDNS-Update aufgerufen, Antwort: %s", answer)
         return True
