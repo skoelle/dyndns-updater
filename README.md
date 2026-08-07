@@ -23,6 +23,40 @@ vim .env   # Werte eintragen
 docker compose up -d
 ```
 
+## Konfiguration (`.env`)
+
+Alle Einstellungen erfolgen ausschließlich über Umgebungsvariablen (siehe
+[`.env.example`](.env.example)). Pflichtfelder:
+
+| Variable | Zweck |
+| --- | --- |
+| `FRITZBOX_HOST`, `_USER`, `_PASSWORD` | TR-064-Zugang zur FritzBox (IP-Quelle) |
+| `CLOUDFLARE_API_TOKEN` | Cloudflare-Token (Zone -> DNS -> Edit) |
+| `CLOUDFLARE_ZONE_ID` | Cloudflare-Zone |
+| `CLOUDFLARE_RECORDS` | Kommagetrennte A-Record-Namen (DNS-only) |
+
+Optional: `FREEDNS_UPDATE_URL`, `WEBHOOK_PORT`, `POLL_INTERVAL_MINUTES`,
+`HEALTHCHECK_PING_URL`, `TZ`, `LOG_LEVEL`. Die IP kommt ausschließlich aus der
+FritzBox, nie aus Webhook-Parametern.
+
+## Betrieb
+
+- **State:** zuletzt bekannte IP liegt als `data/last-known-ip.json` (Volume) –
+  Änderung wird erst nach erfolgreichem Update gespeichert.
+- **Webhook:** `GET <port>/webhook/update` (kein Auth, intern) löst einen Zyklus aus.
+- **Healthz:** `GET <port>/healthz` für Container-Healhcheck.
+- **Healthchecks:** Healthy Ping bei jedem Poll, Failure Ping bei IP-Fehler bzw. Teilfehler.
+- **Logs/Wartung:** `docker compose logs -f`; Updates via Watchtower (Label im Compose).
+
+## Test/Quality
+
+```bash
+python3 -m venv .venv && . .venv/bin/activate   # virtuelles Umfeld
+pip install -r requirements.txt -r requirements-dev.txt
+ruff check .
+ruff format --check .
+```
+
 ## Build
 
 Wird automatisch per GitHub Actions nach `ghcr.io/skoelle/dyndns-updater` gebaut
