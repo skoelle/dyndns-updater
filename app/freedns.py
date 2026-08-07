@@ -12,7 +12,11 @@ def update(update_url: str, timeout: int = 15) -> bool:
     try:
         resp = requests.get(update_url, timeout=timeout)
         resp.raise_for_status()
-        log.info("FreeDNS-Update aufgerufen, Antwort: %s", resp.text.strip()[:200])
+        answer = resp.text.strip()[:200]
+        if "has not changed" in answer:
+            log.info("FreeDNS: IP unveraendert - kein Update noetig.")
+        else:
+            log.info("FreeDNS-Update aufgerufen, Antwort: %s", answer)
         return True
     except requests.RequestException as exc:
         log.error("FreeDNS-Update fehlgeschlagen: %s", exc)
