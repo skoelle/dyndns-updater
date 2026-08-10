@@ -26,7 +26,8 @@ die IP bei jedem Trigger selbst ueber die FritzBox TR-064-Schnittstelle.
 2. IP_letzte = state.load()
 3. Wenn gleich: Poll -> nur Heartbeat-Ping, kein Update. Webhook/Start -> nur Log.
 4. Wenn unterschiedlich: Cloudflare-Records updaten, FreeDNS aufrufen, state speichern,
-   Healthcheck-Erfolgs-Ping. Bei Teilfehler: state NICHT speichern, Fail-Ping.
+   Healthcheck-Erfolgs-Ping, E-Mail-Notification (optional). Bei Teilfehler: state NICHT
+   speichern, Fail-Ping.
 
 ## 3. Cloudflare
 
@@ -46,7 +47,14 @@ die IP bei jedem Trigger selbst ueber die FritzBox TR-064-Schnittstelle.
 - FritzBox-TR-064-User mit eingeschraenkten Rechten
 - Alle Records bleiben DNS-only (kein Proxy-Mode in v1)
 
-## 6. Offene Punkte
+## 6. E-Mail-Notification (optional)
+
+- HTML-E-Mail mit Emojis bei erfolgreicher IP-Aenderung
+- SMTP-Auth mit TLS (Port 587)
+- Nur wenn SMTP_HOST, NOTIFY_EMAIL_TO und NOTIFY_EMAIL_FROM gesetzt
+- Plain-Text-Fallback fuer Clients ohne HTML-Unterstuetzung
+
+## 7. Offene Punkte
 
 - IPv6/AAAA
 - Proxy-Mode fuer reine HTTP(S)-Subdomains

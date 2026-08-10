@@ -7,7 +7,7 @@ import threading
 from apscheduler.schedulers.background import BackgroundScheduler
 from flask import Flask
 
-from app import cloudflare, freedns, healthcheck, state
+from app import cloudflare, freedns, healthcheck, notify, state
 from app.config import config
 from app.fritzbox import FritzBoxError, get_external_ip
 
@@ -67,6 +67,7 @@ def run_cycle(trigger: str = "unknown"):
                 status="success",
                 message=f"IP updated to {current_ip}",
             )
+            notify.send_ip_changed_email(last_ip, current_ip)
         else:
             failed = {k: v for k, v in cf_results.items() if v != "ok"}
             log.error(

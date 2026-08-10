@@ -13,6 +13,7 @@
 
 ## Phase 2 - Kernmodule
 - [x] config.py, state.py, fritzbox.py, cloudflare.py, freedns.py, healthcheck.py, main.py
+- [x] notify.py (E-Mail-Notification bei IP-Aenderung)
 
 ## Phase 3 - Lokaler Test
 - [ ] .env lokal befuellen (nicht committen)

@@ -39,6 +39,20 @@ Optional: `FREEDNS_UPDATE_URL`, `POLL_INTERVAL_MINUTES`,
 `HEALTHCHECK_PING_URL`, `TZ`, `LOG_LEVEL`. Die IP kommt ausschließlich aus der
 FritzBox, nie aus Webhook-Parametern.
 
+### E-Mail-Notification (optional)
+
+Bei IP-Änderung wird eine HTML-E-Mail mit Emojis versendet, wenn SMTP-Konfiguration
+vorliegt:
+
+| Variable | Zweck |
+| --- | --- |
+| `SMTP_HOST` | SMTP-Server (z.B. `smtp.gmail.com`) |
+| `SMTP_PORT` | Port (Default: `587`) |
+| `SMTP_USER` | SMTP-Login |
+| `SMTP_PASSWORD` | SMTP-Passwort |
+| `NOTIFY_EMAIL_TO` | Empfänger-Adresse |
+| `NOTIFY_EMAIL_FROM` | Absender-Adresse |
+
 ## Betrieb
 
 - **State (bewusst ohne Volume, ephemeral):** zuletzt bekannte IP liegt als

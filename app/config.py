@@ -39,7 +39,18 @@ class Config:
 
         self.healthcheck_ping_url = os.environ.get("HEALTHCHECK_PING_URL", "")
 
+        self.smtp_host = os.environ.get("SMTP_HOST", "")
+        self.smtp_port = int(os.environ.get("SMTP_PORT", "587"))
+        self.smtp_user = os.environ.get("SMTP_USER", "")
+        self.smtp_password = os.environ.get("SMTP_PASSWORD", "")
+        self.notify_email_to = os.environ.get("NOTIFY_EMAIL_TO", "")
+        self.notify_email_from = os.environ.get("NOTIFY_EMAIL_FROM", "")
+
         self.state_path = os.environ.get("STATE_PATH", "/app/data/last-known-ip.json")
+
+    @property
+    def email_notification_enabled(self) -> bool:
+        return bool(self.smtp_host and self.notify_email_to and self.notify_email_from)
 
     def validate(self):
         missing = [v for v in REQUIRED_VARS if not os.environ.get(v)]
