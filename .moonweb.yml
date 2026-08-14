@@ -1,0 +1,6 @@
+title: "DynDns Updater"
+emoji: "📡"
+category: code
+subcategory: "Infra Tools"
+status: active
+stack: [Python, Flask, Requests, fritzconnection, APScheduler]
